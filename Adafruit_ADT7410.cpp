@@ -76,6 +76,40 @@ float Adafruit_ADT7410::readTempC() {
 }
 
 /*!
+ *   @brief  Sets the low, high, or critical setpoint for interrupt pins.
+ *   @param  ADT7410_SETPOINT_LOW, ADT7410_SETPOINT_HIGH or ADT7410_SETPOINT_CRITICAL.
+ *   @param  temp The desired setpoint in degrees centigrade.
+ *   @note   Defualt values are: low 10°C; high 64°C; critical 147°C
+ */
+void Adafruit_ADT7410::setInterruptC(uint8_t reg, float temp) {
+  int16_t value = 128 * temp;
+
+  write8(reg, value >> 8);
+  write8(reg + 1, value & 0xFF);
+}
+
+/*!
+ *   @brief  Sets the hysteresis value for temperature interrupt
+ *   @param  temp The number of degrees centigrade as a whole number. Default is 5.
+ */
+void Adafruit_ADT7410::setHysteresisC(uint8_t value) {
+  write8(ADT7410_REG__ADT7410_HYST, value);
+}
+
+/*!
+ *   @brief  Changes the mode of operation to or from comparator mode.
+ *   @param  comparator True for comparator mode, false for interrupt mode (the default).
+ */
+void Adafruit_ADT7410::setComparatorMode(bool comparator) {
+  uint8_t config = read8(ADT7410_REG__ADT7410_CONFIG);
+
+  if (comparator) config |= 1 << 4;
+  else config &= ~(1 << 4);
+
+  write8(ADT7410_REG__ADT7410_CONFIG, config);
+}
+
+/*!
  *    @brief  Low level 8 bit write procedures
  *    @param  reg
  *    @param  value

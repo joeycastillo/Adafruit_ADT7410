@@ -26,9 +26,19 @@
 #define ADT7410_REG__ADT7410_TEMPLSB 0x1 ///< Temp. value LSB
 #define ADT7410_REG__ADT7410_STATUS  0x2 ///< Status register
 #define ADT7410_REG__ADT7410_CONFIG  0x3 ///< Configuration register
+#define ADT7410_REG__ADT7410_HIGHMSB 0x4 ///< High temp. setpoint MSB
+#define ADT7410_REG__ADT7410_HIGHLSB 0x5 ///< High temp. setpoint LSB
+#define ADT7410_REG__ADT7410_LOWMSB  0x6 ///< Low temp. setpoint MSB
+#define ADT7410_REG__ADT7410_LOWLSB  0x7 ///< Low temp. setpoint LSB
+#define ADT7410_REG__ADT7410_CRITMSB 0x8 ///< Critical temp. setpoint LSB
+#define ADT7410_REG__ADT7410_CRITLSB 0x9 ///< Critical temp. setpoint LSB
+#define ADT7410_REG__ADT7410_HYST    0xA ///< Temperature hysteresis
 #define ADT7410_REG__ADT7410_ID      0xB ///< Manufacturer identification
-#define ADT7410_REG__ADT7410_SWRST   0x2F ///< Temperature hysteresis
+#define ADT7410_REG__ADT7410_SWRST  0x2F ///< Software Reset
 
+#define ADT7410_SETPOINT_HIGH ADT7410_REG__ADT7410_HIGHMSB
+#define ADT7410_SETPOINT_LOW ADT7410_REG__ADT7410_LOWMSB
+#define ADT7410_SETPOINT_CRITICAL ADT7410_REG__ADT7410_CRITMSB
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
@@ -39,6 +49,9 @@ public:
   Adafruit_ADT7410();
   boolean begin(uint8_t a = ADT7410_I2CADDR_DEFAULT);
   float readTempC();
+  void setInterruptC(uint8_t reg, float temp);
+  void setHysteresisC(uint8_t value);
+  void setComparatorMode(bool comparator);
   void write8(uint8_t reg, uint8_t val);
   uint16_t read16(uint8_t reg);
   uint8_t read8(uint8_t reg);
